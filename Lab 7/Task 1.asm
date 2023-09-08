@@ -14,29 +14,43 @@
  MOV DS,AX
  MOV AX,0
  MOV BX,offset A
- MOV DI,offset B
- MOV SI,0
- MOV BP,0
+ PUSH BX
+ MOV BX,offset B
+ PUSH BX
+ MOV BX,offset C
+ PUSH BX
  MOV CX,10h
- 
+ PUSH CX
  CALL sum   
-     
+
+.exit     
  main ENDP
  
  PROC sum
- continue:
+ 
+ PUSH BP
+ MOV BP,SP 
+ MOV SI,10h
+ MOV BX,offset [BP+SI]
+ SUB SI,2h
+ MOV DI,offset [BP+SI]
+ SUB SI,6h
+ MOV CX,[BP+SI]
+ MOV SI,0
+ MOV DX,BP
+ MOV BP,0
+ L1:
  MOV AL,[BX+SI]
- MOV DL,[DI+BP]
- ADD AL,DL
+ ADD AL,[DI,BP]
+ 
  MOV [C+SI],AL
  INC SI
  INC BP
- DEC CX
- CMP CX,0
- JNE continue
- JMP END   
- ret   
- sum ENDP
+ LOOP L1  
  
- END:   
-.exit
+ XCHG BP,DX
+ MOV DX,0
+ POP BP
+ RET 8  
+ sum ENDP
+    
