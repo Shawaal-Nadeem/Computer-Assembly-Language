@@ -1,0 +1,77 @@
+.model small
+
+.stack
+
+.data
+ 
+ temp dw 0
+ 
+.code
+ 
+ PROC main
+ 
+ CALL num1
+ MOV DX,0
+ CALL num2
+ ADC AX,DX
+ MOV CX,4h
+ MOV SI,10h
+ 
+ 
+ L1:
+ MOV DX,0
+ DIV SI
+ ADD DL,30h
+ MOV AH,2h
+ INT 21H
+ LOOP L1
+
+.exit
+ main ENDP
+ 
+ PROC num1
+ MOV AH,1
+ INT 21H
+ SUB AL,30h
+ MOV DH,AL
+ MOV CL,4
+ SHL DH,CL
+ INT 21H
+ SUB AL,30h
+ MOV DL,AL
+ OR DH,DL
+ INT 21H
+ SUB AL,30h
+ MOV DL,AL
+ SHL DL,CL
+ INT 21H
+ SUB AL,30h
+ MOV BH,AL
+ OR DL,BH
+ MOV AX,DX
+ RET
+ ENDP num1   
+ 
+ PROC num2
+ MOV temp,AX   
+ MOV AH,1
+ INT 21H
+ SUB AL,30h
+ MOV DH,AL
+ MOV CL,4
+ SHL DH,CL
+ INT 21H
+ SUB AL,30h
+ MOV DL,AL
+ OR DH,DL
+ INT 21H
+ SUB AL,30h
+ MOV DL,AL
+ SHL DL,CL
+ INT 21H
+ SUB AL,30h
+ MOV BH,AL
+ OR DL,BH
+ MOV AX,temp
+ RET
+ ENDP num2
